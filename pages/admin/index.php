@@ -19,7 +19,7 @@ if($user->isLoggedIn()){
             // They haven't, do so now
             Redirect::to(URL::build('/admin/auth'));
             die();
-        } else if(!$user->hasPermission('admincp.files')){
+        } else if(!$user->hasPermission('admincp.files') && !$user->data()->id != 1){
             // Can't view this page
             require(ROOT_PATH . '/404.php');
             die();
