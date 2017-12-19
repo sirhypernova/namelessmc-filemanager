@@ -24,7 +24,7 @@
             });
             var imgdata = null;
             var pdfdata = null;
-            <?php if (isset($_GET['medit']) && isset($edit) && is_a($edit,'File') || is_a($edit,'Folder')) { ?>
+            <?php if (isset($_GET['medit']) && (isset($edit) && is_a($edit,'File') || is_a($edit,'Folder'))) { ?>
                     $('#edit-modal').modal('open');
                     $('#edit-file-content').trigger('autoresize');
             <?php }
