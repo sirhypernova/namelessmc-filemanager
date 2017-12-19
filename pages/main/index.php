@@ -46,7 +46,7 @@ $path = str_replace('{USERID}',$user->data()->id,$path);
 
 define('FM_ROOT_DIR',$path);
 define('FM_ALLOWED_EXTENSIONS',serialize($exts));
-define('FM_MAX_SIZE',$size);
+define('FM_MAX_SIZE',eval('return '.$size.';'));
 
 $title = $fm_lang->get('files', 'name');
 $filedir = FM_ROOT_DIR;
