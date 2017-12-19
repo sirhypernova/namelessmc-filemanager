@@ -157,7 +157,7 @@ if (isset($allFiles['files'])) {
     </div>
 </div>
 <div class="modal" id="upload-modal">
-    <form action="<?php echo (isset($_GET['dir'])?'?route=/files/&?dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo (isset($_GET['dir'])?'?route=/files/&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
         <div class="modal-content">
             <h4>Upload File</h4>
             
