@@ -52,14 +52,14 @@ $title = $fm_lang->get('files', 'name');
 $filedir = FM_ROOT_DIR;
 $afiles = new Files (false,FM_ROOT_DIR,unserialize(FM_ALLOWED_EXTENSIONS),FM_MAX_SIZE);
 
-if (isset($_GET['delete']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_GET['delete']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     $file = $afiles->get($_GET['delete']);
     if ($file) {
         $file->delete();
     }
 }
 
-if (isset($_GET['edit']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_GET['edit']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     $file = $afiles->get($_GET['edit']);
     if ($file && isset($_POST['edit-file-sub']) && is_a($file,'File') && $file->editable) {
         $file->edit((isset($_POST['edit-file-content'])?$_POST['edit-file-content']:null),(isset($_POST['edit-file-name'])?$_POST['edit-file-name']:null));
@@ -70,21 +70,21 @@ if (isset($_GET['edit']) && $user->hasPermission('files.write') || $user->data()
     }
 }
 
-if (isset($_GET['rndir']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_GET['rndir']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     $dir = $afiles->get($_GET['rndir']);
     if ($dir && isset($_POST['edit-file-name']) && is_a($dir,'Folder')) {
         $dir->rename($_POST['edit-file-name']);
     }
 }
 
-if (isset($_GET['unzip']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_GET['unzip']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     $file = $afiles->get($_GET['unzip']);
     if ($file->ext == 'zip') {
         $file->unzip();
     }
 }
 
-if (isset($_POST['file-upload-sub']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_POST['file-upload-sub']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     if (isset($_GET['dir'])) {
         $dir = $afiles->get($_GET['dir']);
         $dir->upload($_FILES['file-upload']);
@@ -93,7 +93,7 @@ if (isset($_POST['file-upload-sub']) && $user->hasPermission('files.write') || $
     }
 }
 
-if (isset($_POST['new-file-sub']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_POST['new-file-sub']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     if (!isset($_POST['new-file-type'])) {
         $type = 'file';
     } else {
@@ -126,7 +126,7 @@ if (isset($_GET['download'])) {
     die();
 }
 
-if (isset($_GET['zip']) && $user->hasPermission('files.write') || $user->data()->id == 1) {
+if (isset($_GET['zip']) && ($user->hasPermission('files.write') || $user->data()->id == 1)) {
     $file = $afiles->get($_GET['zip']);
     if (is_a($file,'Folder')) {
         $lfile = $file->zip();
