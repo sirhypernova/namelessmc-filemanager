@@ -180,7 +180,6 @@ if (isset($allFiles['files'])) {
 <?php
     if (isset($_GET['medit'])) {
         $edit = $afiles->get($_GET['medit']);
-    }
 ?>
 <div class="modal" id="edit-modal">
     <form action="<?php echo (isset($_GET['medit'])?'?route=/files/&edit='.$_GET['medit']:null).(isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
@@ -203,6 +202,9 @@ if (isset($allFiles['files'])) {
         </div>
     </form>
 </div>
+<?php
+	}
+?>
 <div class="modal" id="new-modal">
     <form action="<?php echo (isset($_GET['dir'])?'?route=/files/&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
         <div class="modal-content">
