@@ -7,6 +7,6 @@
  *
  *  File Manager Module
  */
-$module_version = '1.1.2';
+$module_version = '1.2.2';
 $nameless_version = '2.0.0-pr3';
 $module_author = 'SirHyperNova';
