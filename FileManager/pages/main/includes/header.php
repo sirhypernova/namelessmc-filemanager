@@ -17,7 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <nav class="blue accent-2">
+        <nav class="<?php echo $color; ?><?php echo ($colorModifier!='normal'?' '.$colorModifier:null) ?>">
             <div class="nav-wrapper container">
                 <a href="?route=/" class="brand-logo truncate"><?php echo SITE_NAME; ?></a>
                 <ul class="right hide-on-med-and-down">
