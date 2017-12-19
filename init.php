@@ -9,9 +9,23 @@
  */
 
 // Ensure module has been installed
+$cache->setCache('modulescache');
+
 $module_installed = $cache->retrieve('FileManager');
 if(!$module_installed){
-
+	// Update main admin group permissions
+	$group = $queries->getWhere('groups', array('id', '=', 2));
+	$group = $group[0];
+	
+	$group_permissions = json_decode($group->permissions, TRUE);
+	$group_permissions['admincp.files'] = 1;
+	$group_permissions['files.view'] = 1;
+	$group_permissions['files.write'] = 1;
+	
+	$group_permissions = json_encode($group_permissions);
+	$queries->update('groups', 2, array('permissions' => $group_permissions));
+	
+	$cache->store('FileManager', 1);
 } else {
 	// Installed
 }
