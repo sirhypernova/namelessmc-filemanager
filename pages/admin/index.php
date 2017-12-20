@@ -97,7 +97,7 @@ $admin_page = 'files';
         }
         
         if (isset($_POST['files-submit'])) {
-            $cache->store('path',preg_replace('/([^a-zA-Z0-9{}.\/()\-_ ])/','',preg_replace('/\/$/','',preg_replace('/^\//','',$_POST['files-path']))));
+            $cache->store('path',preg_replace('/([^a-zA-Z0-9#{}.\/()\-_ ])/','',preg_replace('/\/+$/','',preg_replace('/^\/+/','',$_POST['files-path']))));
             $cache->store('size',preg_replace('/([^0-9+\-*])/','',$_POST['files-size']));
             if (strlen($_POST['files-ext']) > 0) {
                 if (!in_array(preg_replace('/([^a-zA-Z])/','',$_POST['files-ext']),$exts) && strlen(preg_replace('/([^a-zA-Z])/','',$_POST['files-ext'])) >= 2) {
@@ -113,7 +113,7 @@ $admin_page = 'files';
                 $cache->store('colorModifier',$_POST['files-color-modifier']);
                 $colorModifier = $_POST['files-color-modifier'];
             }
-            $path = preg_replace('/([^a-zA-Z0-9{}.\/()\-_ ])/','',preg_replace('/\/+$/','',preg_replace('/^\/+/','',$_POST['files-path'])));
+            $path = preg_replace('/([^a-zA-Z0-9#{}.\/()\-_ ])/','',preg_replace('/\/+$/','',preg_replace('/^\/+/','',$_POST['files-path'])));
             $size = preg_replace('/([^0-9+\-*])/','',$_POST['files-size']);
         }
         ?>
