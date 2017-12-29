@@ -427,7 +427,7 @@ class File extends Files {
     }
     public function unzip () {
         $zip = new ZipArchive;
-        if ($file-ext != 'zip') return;
+        if ($file->ext != 'zip') return;
         $pos = strpos($this->fullpath,$this->fullname);
         if ($pos !== false) {
             $destination = realpath(substr_replace($this->fullpath,'',$pos,strlen($this->fullname))).'/'.$this->name;
