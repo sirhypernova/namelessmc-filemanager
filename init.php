@@ -39,17 +39,19 @@ PermissionHandler::registerPermissions('Files', array(
     'files.write' => $fm_lang->get('files','name') . ' &raquo; ' . $fm_lang->get('files','write')
 ));
 
-if ($user->isLoggedIn() && $user->hasPermission('files.view') || $user->isLoggedIn() && $user->data()->id == 1) {
-    // Add link to navbar
-    $navigation->add('FileManager', $fm_lang->get('files', 'name'), URL::build('/files'));
-    // Define URLs which belong to this module
-    $pages->add('FileManager', '/files','pages/main/index.php');
-    $pages->add('FileManager', '/admin/files','pages/admin/index.php');
-}
-if($user->hasPermission('admincp.files') || $user->data()->id == 1){
-    if(!isset($admin_sidebar)) $admin_sidebar = array();
-    $admin_sidebar['files'] = array(
-        'title' => $fm_lang->get('files', 'name'),
-        'url' => URL::build('/admin/files')
-    );
+if($user->isLoggedIn()){
+    if($user->hasPermission('files.view') || $user->data()->id == 1) {
+        // Add link to navbar
+        $navigation->add('FileManager', $fm_lang->get('files', 'name'), URL::build('/files'));
+        // Define URLs which belong to this module
+        $pages->add('FileManager', '/files','pages/main/index.php');
+        $pages->add('FileManager', '/admin/files','pages/admin/index.php');
+    }
+    if($user->hasPermission('admincp.files') || $user->data()->id == 1){
+        if(!isset($admin_sidebar)) $admin_sidebar = array();
+        $admin_sidebar['files'] = array(
+            'title' => $fm_lang->get('files', 'name'),
+            'url' => URL::build('/admin/files')
+        );
+    }
 }
