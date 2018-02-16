@@ -44,6 +44,7 @@ $path = str_replace('{ROOT_PATH}',ROOT_PATH,$path);
 $path = str_replace('{USERNAME}',$user->data()->username,$path);
 $path = str_replace('{USERID}',$user->data()->id,$path);
 
+define('URL_PATH',URL::build('/files'));
 define('FM_ROOT_DIR',$path);
 define('FM_ALLOWED_EXTENSIONS',serialize($exts));
 define('FM_MAX_SIZE',eval('return '.$size.';'));
@@ -157,7 +158,7 @@ if (isset($allFiles['files'])) {
     </div>
 </div>
 <div class="modal" id="upload-modal">
-    <form action="<?php echo (isset($_GET['dir'])?'?route=/files/&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo (isset($_GET['dir'])?'<?php echo URL_PATH; ?>&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
         <div class="modal-content">
             <h4>Upload File</h4>
             
@@ -182,7 +183,7 @@ if (isset($allFiles['files'])) {
         $edit = $afiles->get($_GET['medit']);
 ?>
 <div class="modal" id="edit-modal">
-    <form action="<?php echo (isset($_GET['medit'])?'?route=/files/&edit='.$_GET['medit']:null).(isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo (isset($_GET['medit'])?URL_PATH.'&edit='.$_GET['medit']:null).(isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
         <div class="modal-content">
             <h4>Edit</h4>
             <div class="input-field">
@@ -206,7 +207,7 @@ if (isset($allFiles['files'])) {
 	}
 ?>
 <div class="modal" id="new-modal">
-    <form action="<?php echo (isset($_GET['dir'])?'?route=/files/&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo (isset($_GET['dir'])?URL_PATH.'&dir='.$_GET['dir']:null); ?>" method="POST" enctype="multipart/form-data">
         <div class="modal-content">
             <h4>Create File</h4>
             <div class="input-field">
@@ -246,7 +247,7 @@ if (isset($allFiles['files'])) {
                     if (isset($_GET['dir']) && $_GET['dir'] != '/' && $_GET['dir'] != '') { ?>
                         <li class="collection-item">
                             <?php $newdir = str_replace(realpath($filedir),'',realpath($filedir.'/'.$_GET['dir'].'/../')); ?>
-                            <a href="<?php echo ($newdir == ''?'?route=/files':'?route=/files/&dir='.$newdir); ?>"><i class="material-icons secondary-content left <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">folder</i></a>
+                            <a href="<?php echo ($newdir == ''?URL_PATH:URL_PATH . '&dir='.$newdir); ?>"><i class="material-icons secondary-content left <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">folder</i></a>
                             ..
                         </li>
                     <?php }
@@ -258,7 +259,7 @@ if (isset($allFiles['files'])) {
                     if (count($folders) > 0) {
                         foreach ($folders as $folder) { ?>
                             <li class="collection-item">
-                                <a href="?route=/files/&dir=<?php echo (isset($_GET['dir'])?str_replace($filedir,'',realpath($filedir.'/'.$_GET['dir'])):null).'/'.$folder->name; ?>"><i class="material-icons secondary-content left <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">folder</i></a>
+                                <a href="<?php echo URL_PATH; ?>&dir=<?php echo (isset($_GET['dir'])?str_replace($filedir,'',realpath($filedir.'/'.$_GET['dir'])):null).'/'.$folder->name; ?>"><i class="material-icons secondary-content left <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">folder</i></a>
                                 <?php
                                     if ($folder->size()/1024 >= 1024) {
                                         $size = round($folder->size()/1048576,3).' megabytes';
@@ -271,11 +272,11 @@ if (isset($allFiles['files'])) {
                                 <?php echo $folder->name; ?> - <?php echo $size; ?>
                                 <div class="secondary-content">
                                     <?php if ($user->hasPermission('files.write') || $user->data()->id == 1) { ?>
-                                    <a href="?route=/files/&medit=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">edit</i></a>
-                                    <a href="#delete-modal" class="modal-trigger" onclick="$('#delete-name').text('<?php echo $folder->name; ?>');$('#modal-delete').attr('href','?route=/files/&delete=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>');"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">delete</i></a>
-                                    <a href="?route=/files/&zip=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">archive</i></a>
+                                    <a href="<?php echo URL_PATH; ?>&medit=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">edit</i></a>
+                                    <a href="#delete-modal" class="modal-trigger" onclick="$('#delete-name').text('<?php echo $folder->name; ?>');$('#modal-delete').attr('href','<?php echo URL_PATH; ?>&delete=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>');"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">delete</i></a>
+                                    <a href="<?php echo URL_PATH; ?>&zip=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">archive</i></a>
                                     <?php } ?>
-                                    <a href="?route=/files/&download=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">file_download</i></a>
+                                    <a href="<?php echo URL_PATH; ?>&download=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $folder->name; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">file_download</i></a>
                                 </div>
                             </li>
                         <?php }
@@ -296,17 +297,17 @@ if (isset($allFiles['files'])) {
                             <?php echo $file->fullname; ?> - <?php echo $size; ?>
                             <div class="secondary-content">
                                 <?php if ($user->hasPermission('files.write') || $user->data()->id == 1) { ?>
-                                <a href="?route=/files/&medit=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">edit</i></a>
-                                <a href="#delete-modal" class="modal-trigger" onclick="$('#delete-name').text('<?php echo $file->fullname; ?>');$('#modal-delete').attr('href','?route=/files/&delete=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>');"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">delete</i></a>
+                                <a href="<?php echo URL_PATH; ?>&medit=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">edit</i></a>
+                                <a href="#delete-modal" class="modal-trigger" onclick="$('#delete-name').text('<?php echo $file->fullname; ?>');$('#modal-delete').attr('href','<?php echo URL_PATH; ?>&delete=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>');"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">delete</i></a>
                                 <?php if ($file->ext == 'zip') { ?>
-                                <a href="?route=/files/&unzip=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">unarchive</i></a>
+                                <a href="<?php echo URL_PATH; ?>&unzip=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">unarchive</i></a>
                                 <?php } ?>
                                 <?php } ?>
                                 <?php if ($file->ext == 'png' || $file->ext == 'jpg' || $file->ext == 'jpeg') { ?>
-                                <a href="?route=/files/&image=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">open_in_new</i></a>
+                                <a href="<?php echo URL_PATH; ?>&image=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">open_in_new</i></a>
                                 <?php } ?>
                                 <?php if ($file->ext == 'pdf') { ?>
-                                    <a href="?route=/files/&pdf=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">open_in_new</i></a>
+                                    <a href="<?php echo URL_PATH; ?>&pdf=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">open_in_new</i></a>
                                 <?php } ?>
                                 <?php if ($file->ext == 'fmlink') { ?>
                                 <?php
@@ -316,7 +317,7 @@ if (isset($allFiles['files'])) {
                                     <?php }
                                 ?>
                                 <?php } ?>
-                                <a href="?route=/files/&download=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">file_download</i></a>
+                                <a href="<?php echo URL_PATH; ?>&download=<?php echo (isset($_GET['dir'])?$_GET['dir']:null); ?>/<?php echo $file->fullname; ?><?php echo (isset($_GET['dir'])?'&dir='.$_GET['dir']:null); ?>"><i class="material-icons <?php echo $color.'-text'; ?><?php echo ($colorModifier!='normal'?' text-'.$colorModifier:null) ?>">file_download</i></a>
                             </div>
                         </li>
                     <?php }
